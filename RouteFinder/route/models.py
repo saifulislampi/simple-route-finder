@@ -15,8 +15,10 @@ from django.db.models.signals import pre_save, post_save, post_delete
 class Stopage(models.Model):
     name=models.CharField(max_length=120)
     adjacent=models.ManyToManyField("self",blank=True)
+    # cost_from_source=models.DecimalField(max_digits=20, decimal_places=6, default=100000000)
     lattitude=models.DecimalField(max_digits=20, decimal_places=6, blank=True,null=True)
     longitude=models.DecimalField(max_digits=20, decimal_places=6, blank=True,null=True)
+
 
     def __unicode__(self):
         return self.name
@@ -31,6 +33,8 @@ class BusOption(models.Model):
     cost=models.DecimalField(max_digits=10,decimal_places=2,default=10)
     edges=models.ManyToManyField('Edge',blank=True)
 
+
+
     def __unicode__(self):
         return self.bus_name+" "+str(self.cost)
 
@@ -41,7 +45,7 @@ class BusOption(models.Model):
 class Edge(models.Model):
     source=models.ForeignKey(Stopage,related_name="source")
     dest=models.ForeignKey(Stopage,related_name="dest")
-    distance=models.DecimalField(max_digits=10,decimal_places=2)
+    distance=models.DecimalField(max_digits=10,decimal_places=2,default=1.0)
     best_option=models.ForeignKey(BusOption,related_name="best_option",blank=True,null=True)
 
     def __unicode__(self):

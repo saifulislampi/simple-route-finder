@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{{title}}</title>
+
+        <style>
+            fieldset {
+                display: block;
+                margin-left: 2px;
+                margin-right: 2px;
+                padding-top: 0.35em;
+                padding-bottom: 0.625em;
+                padding-left: 0.75em;
+                padding-right: 0.75em;
+                width: 30%;
+                border: 2px groove (internal value);
+            }
+        </style>
+    </head>
+    <body >
+        <h1>Route Finder</h1>
+
+        <form action="" method="post">
+           {% csrf_token %}
+           <fieldset >
+               <legend>Select source and destination from here</legend>
+               <table >
+                   {{ form.as_table }}
+                   <tr>
+                       <td>
+                           <b>Priority:</b>
+                       </td>
+                       <td>
+                           <select name="priority">
+                                <option value="distance">Distance</option>
+                                <option value="cost">Cost</option>
+                                <option value="time">Time</option>
+                             </select>
+                       </td>
+                   </tr>
+
+               </table>
+
+
+               <!-- {{ form.as_p }} -->
+               <input type="submit" name="submit" value="Submit">
+
+           </fieldset>
+
+       </form>
+
+    </body>
+</html>

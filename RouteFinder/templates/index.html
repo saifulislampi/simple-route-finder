@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="page-header">
+            <center>
+                <h1>Route Finder</h1>
+            </center>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form role="form" class="" action="" method="post">
+                <h2>Submit your query here</h2>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="form-group">
+                    <label class="=control-label">Priority:</label>
+                    <div class="">
+                        <select name="priority" class="form-control">
+                            <option value="distance">Shortest Distance</option>
+                            <option value="time">Shortest Time</option>
+                            <option value="cost">Lowest Cost</option>
+                        </select>
+                    </div>
+                </div>
+
+                <input class="btn btn-primary" type="submit" name="submit" value="Find me a route!">
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+        {% if path %}
+            <h2>{{d.get(id=5)}}</h2>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}

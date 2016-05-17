@@ -47,6 +47,7 @@ class Edge(models.Model):
     dest=models.ForeignKey(Stopage,related_name="dest")
     distance=models.DecimalField(max_digits=10,decimal_places=2,default=1.0)
     best_option=models.ForeignKey(BusOption,related_name="best_option",blank=True,null=True)
+    jam_factor=models.DecimalField(max_digits=10,decimal_places=2,default=1.0)
 
     def __unicode__(self):
         return self.source.name+" >> "+self.dest.name

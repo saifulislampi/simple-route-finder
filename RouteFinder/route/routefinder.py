@@ -5,6 +5,7 @@ import sys
 
 
 
+
 def shortest_distance(source, destination,stopages,edges,priority=None):
     print "Source: "+source.name
     print "Destination: "+destination.name
@@ -42,8 +43,6 @@ def shortest_distance(source, destination,stopages,edges,priority=None):
     cost[source]=0;
 
     s=stopages.get(id=source.id)
-    print("Cost of before loop : "+s.name+" "+str(cost[s]))
-
 
 
     unvisited_queue = [(cost[v],v) for v in stopages]
@@ -60,8 +59,6 @@ def shortest_distance(source, destination,stopages,edges,priority=None):
         if(current==destination):
             break
 
-        print("Cost of "+current.name+" is : "+str(cost[current]))
-
         adjacent=current.adjacent.all()
 
         for next in adjacent:
@@ -73,13 +70,13 @@ def shortest_distance(source, destination,stopages,edges,priority=None):
             except:
                 edge=edges.get(source=next,dest=current)
 
-            print(current.name+" : "+next.name)
-            print(edge.source.name+" >>> "+edge.dest.name)
+            # print(current.name+" : "+next.name)
+            # print(edge.source.name+" >>> "+edge.dest.name)
 
             new_cost = cost[current] + weight[edge]
 
             if new_cost < cost[next]:
-                print("New cost of "+next.name+" :"+str(new_cost))
+                # print("New cost of "+next.name+" :"+str(new_cost))
                 cost[next]=new_cost
                 previous[next]=current
 
@@ -95,25 +92,34 @@ def shortest_distance(source, destination,stopages,edges,priority=None):
         unvisited_queue = [(cost[v],v) for v in stopages if not visited[v]]
         heapq.heapify(unvisited_queue)
 
+    total=cost[destination]
+    print("Final cost of destination is :"+str(total))
 
-    print("Final cost of destination is :"+str(cost[destination]))
+    #Preparing for web output
 
+    E_Objects=[] #Edges in our path
+
+
+    #Re order the path
     x=destination
-    path=" --END"
-
-
-
     while(previous[x]):
-        try:
-            edge=edges.get(source=x,dest=previous[x])
-        except:
-            edge=edges.get(dest=x,source=previous[x])
-        path="--"+str(weight[edge])+ "--"+x.name+path;
-
-        
+        p=previous[x]
+        next_to[p]=x
         x=previous[x]
 
-    path=source.name+path
-    print(path)
+    next_to[destination]=None;
 
-    return path;
+    s=source;
+    while(next_to[s]):
+        try:
+            e=edges.get(source=s,dest=next_to[s])
+        except:
+            e=edges.get(dest=s,source=next_to[s])
+            e.source=s;
+            e.dest=next_to[s]
+
+        E_Objects.append(e);
+        s=next_to[s]
+
+
+    return E_Objects,total

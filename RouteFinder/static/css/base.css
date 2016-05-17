@@ -1,4 +1,16 @@
-.query-form{
-    margin: 0 auto;
-    width:80% /* value of your choice which suits your alignment */
+.jumbotron{
+    border: solid 2px white;
+    background: #F4F6F7;
+
+}
+
+#site-output{
+    color: grey;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#gmap-output{
+    padding-left: 10px;
+    padding-right: 10px;
+    color: green;
 }

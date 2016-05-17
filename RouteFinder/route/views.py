@@ -13,35 +13,49 @@ edges=Edge.objects.all()
 def home(request):
     form=RouteForm()
 
+    context={
+        "form":form
+    }
+
+
     if "submit" in request.POST:
         source_id=request.POST.get("source")
         destination_id=request.POST.get("destination")
-
-        source=stopages.get(id=source_id)
-        destination=stopages.get(id=destination_id)
+        try:
+            source=stopages.get(id=source_id)
+            destination=stopages.get(id=destination_id)
+        except:
+            return render(request,"index.html",context)
 
         priority=request.POST.get("priority")
 
-        path=shortest_distance(source,destination,stopages,edges,priority)
+        e_objects,total=shortest_distance(source,destination,stopages,edges,priority)
 
-        d={}
-        d["5"]="Hello";
+        for e in e_objects:
+            for bus in e.busoption_set.all():
+                print bus.bus_name
+
         context={
-            "title":"Home",
             "form":form,
-            "path":path,
-            "d":stopages,
+            "result":True,
+            "map": True,
+            "total": total,
+            "e_objects": e_objects,
+            "default": True,
+            "cost": False,
+            "origin":source.name+" Bus Stop",
+            "destination":destination.name+" Bus Stop",
+
         }
+
+        if(priority=="cost"):
+            context["cost"]=True
+            context["default"]=False
+
+
 
         return render(request,"index.html",context)
 
-
-
-
-    context={
-        "title":"Home",
-        "form":form
-    }
 
 
     return render(request,"index.html",context)

@@ -10,6 +10,7 @@ class BusOptionInline(admin.TabularInline):
 	model = BusOption.edges.through
 
 class EdgeAdmin(admin.ModelAdmin):
+	list_filter = ('source', 'dest')
 	inlines = [
 	   BusOptionInline
 	]
@@ -17,17 +18,24 @@ class EdgeAdmin(admin.ModelAdmin):
 		model = Edge
 
 
-# class AdjacentStopageInline(admin.TabularInline):
-# 	model = Stopage.adjacent.through
-#
-# class StopageAdmin(admin.ModelAdmin):
-# 	inlines = [
-# 	   AdjacentStopageInline
-# 	]
-# 	class Meta:
-# 		model = Stopage
 
 
-admin.site.register(Stopage)
-admin.site.register(BusOption)
+
+class StopageAdmin(admin.ModelAdmin):
+	search_fields=['name']
+	list_filter = ['adjacent']
+	class Meta:
+		model=Stopage
+
+
+
+class BusOptionAdmin(admin.ModelAdmin):
+	search_fields=['name']
+	list_filter = ('edges', 'cost')
+	class Meta:
+		model=BusOption
+
+
+admin.site.register(Stopage,StopageAdmin)
+admin.site.register(BusOption,BusOptionAdmin)
 admin.site.register(Edge,EdgeAdmin)

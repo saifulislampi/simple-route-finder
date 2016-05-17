@@ -37,13 +37,93 @@
         </div>
     </div>
 
+    <br><br><br>
+
 
     <div class="row">
-        {% if path %}
-            <h2>{{d.get(id=5)}}</h2>
-        {% endif %}
+        {% if result %}
+            <hr>
+            <div id="site-output" class="jumbotron col-md-6">
+                <h2>Here is what we found...</h2>
 
+                <table class="table table-bordered table-striped table-hover">
+                    {% if default %}
+                        <tr>
+                            <th class="text-center">Path</td>
+                            <th class="text-center">Available Bus</td>
+                            <th class="text-center">Distance (Km)</td>
+                        </tr>
+                        {% for e in e_objects %}
+                            <tr>
+                                <td> {{e.source}} --> {{e.dest}} </td>
+                                <td>
+                                    {% for bus in e.busoption_set.all %}
+                                        {{bus.bus_name}}
+                                        <br>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{e.distance}}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td colspan="2" class="text-right"> <b>Total</b></td>
+                            <td> {{total}} Km.</td>
+                        </tr>
+
+                    {% endif %}
+
+                    {% if cost %}
+                        <tr>
+                            <th class="text-center">Path</td>
+                            <th class="text-center">Best Ride</td>
+                            <th class="text-center">Cost (Tk.)</td>
+                        </tr>
+                        {% for e in e_objects %}
+                            <tr>
+                                <td> {{e.source}} --> {{e.dest}} </td>
+                                <td> {{e.best_option.bus_name}} </td>
+                                <td>{{e.best_option.cost}}</td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td colspan="2" class="text-right"> <b>Total</b></td>
+                            <td> {{total}} Tk.</td>
+                        </tr>
+
+                    {% endif %}
+
+
+
+
+
+                </table>
+
+            </div>
+
+
+            {% if map %}
+                <div id="gmap-output" class="jumbotron col-md-6">
+
+                    <h2>Here is what google suggests....</h2>
+                    <iframe
+                    width="100%"
+                    height="450"
+                    frameborder="0"
+                    style="border:0"
+
+                    src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyAHc1_vtwiFh4BGoUgGCoiehSMEJiNgocI&origin={{origin}}&destination={{destination}}"
+
+                    </iframe>
+
+                </div>
+            {% endif %}
+        {% endif %}
     </div>
+
 
 
 {% endblock %}
